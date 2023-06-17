@@ -1,9 +1,18 @@
+#title {
+  text-align: center;
+  font-family: monospace;
+  font-size: 40px;
+}
+#color-palette {
+  margin: auto;
+  text-align: center;
+}
 .color {
-   list-style: none;
-    display: inline-block;
-    margin-right: 10px;
-    background-color: yellow;
-    width: 150px;
-    height: 150px;
-    border: 1px solid black;
+  list-style: none;
+  display: inline-block;
+  margin-right: 10px;
+  background-color: yellow;
+  width: 150px;
+  height: 150px;
+  border: 1px solid black;
 }
