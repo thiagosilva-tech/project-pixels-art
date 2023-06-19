@@ -60,4 +60,16 @@ window.onload = function () {
       }
     })
 
+
+    const btnRandomColor = document.querySelector('#button-random-color');
+
+    btnRandomColor.addEventListener('click', () => {
+      for (let index = 0; index < colors.length; index += 1) {
+        const red = Math.floor(Math.random() * 256);
+        const green = Math.floor(Math.random() * 256);
+        const blue = Math.floor(Math.random() * 256);        
+        const colorRandom = `#${red.toString(16)}${green.toString(16)}${blue.toString(16)}`
+        colors[index].style.backgroundColor = colorRandom;        
+      }
+    })
 };
