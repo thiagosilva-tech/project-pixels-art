@@ -14,24 +14,44 @@ window.onload = function () {
     for (let index = 0; index < 25; index += 1) {
       const pixel = document.createElement('div');
       pixel.className = 'pixel';
-      pixel.id = index;
       pixelBoard.appendChild(pixel);
     }
   }
   createPixels();
 
-  
     for (let index = 0; index < colors.length; index += 1) {
       colors[index].addEventListener('click', (evento) => {
         const clickedColor = evento.target;
-        const selectedColor = document.querySelectorAll('.selected');
-        for (let index = 0; index < selectedColor.length; index++) {
-          selectedColor[index].classList.remove('selected');
-        }
         const isSelected = clickedColor.classList.contains('selected');
-        if (!isSelected) {
-          evento.target.classList.add('selected');
-        }        
+        
+        if (isSelected) {
+          clickedColor.classList.remove('selected');
+        } else {
+          const selectedColor = document.querySelector('.selected');
+          if (selectedColor) {
+            selectedColor.classList.remove('selected');
+          }          
+          clickedColor.classList.add('selected');
+        }
+      });
+    }
+
+    
+    const pixels = document.querySelectorAll('.pixel');
+    for (let index = 0; index < pixels.length; index += 1) {
+      pixels[index].addEventListener('click', (evento) =>{
+        const pixelClicked = evento.target;
+        changePixelColor(pixelClicked);
       })      
-    };
+    }
+
+    function changePixelColor(pixel) {
+      const colorSelected = document.querySelector('.selected').style.backgroundColor;
+      console.log(colorSelected);
+      if (colorSelected !== null) {
+        pixel.style.backgroundColor = colorSelected;
+      } else if(colorSelected === null) {
+        pixel.style.backgroundColor = 'white';
+      }
+    }
 };
