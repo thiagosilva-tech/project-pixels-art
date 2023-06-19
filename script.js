@@ -11,14 +11,27 @@ window.onload = function () {
 
   function createPixels() {
     const pixelBoard = document.querySelector('#pixel-board');
-    for (let index = 0; index < 5; index += 1) {
+    for (let index = 0; index < 25; index += 1) {
       const pixel = document.createElement('div');
       pixel.className = 'pixel';
+      pixel.id = index;
       pixelBoard.appendChild(pixel);
     }
   }
-  for (let index = 0; index < 5; index += 1) {
-    createPixels();    
-  }
+  createPixels();
 
+  
+    for (let index = 0; index < colors.length; index += 1) {
+      colors[index].addEventListener('click', (evento) => {
+        const clickedColor = evento.target;
+        const selectedColor = document.querySelectorAll('.selected');
+        for (let index = 0; index < selectedColor.length; index++) {
+          selectedColor[index].classList.remove('selected');
+        }
+        const isSelected = clickedColor.classList.contains('selected');
+        if (!isSelected) {
+          evento.target.classList.add('selected');
+        }        
+      })      
+    };
 };
