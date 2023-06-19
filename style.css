@@ -1,4 +1,4 @@
-body{
+body {
   background-color: #ecf87f;
 }
 
@@ -47,7 +47,7 @@ body{
   border: 5px solid #3d550c;
 }
 
-#container-btn{
+#container-btn {
   margin-top: 50px;
   display: flex;
   justify-content: center;
@@ -63,7 +63,7 @@ body{
   margin-right: 10px;
 }
 
-.btn:hover{
+.btn:hover {
   font-size: 20px;
   transition: 100ms;
 }
