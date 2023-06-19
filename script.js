@@ -52,4 +52,12 @@ window.onload = function () {
         pixel.style.backgroundColor = colorSelected;
       }
     }
+
+    const btnClear = document.querySelector('#clear-board');
+    btnClear.addEventListener('click', () =>{
+      for (let index = 0; index < pixels.length; index += 1) {
+        pixels[index].style.backgroundColor = 'white';        
+      }
+    })
+
 };

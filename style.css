@@ -46,3 +46,24 @@ body{
 .selected {
   border: 5px solid #3d550c;
 }
+
+#container-btn{
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  border: none;
+  background-color: #3d550c;
+  padding: 10px;
+  color: #ecf87f;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+.btn:hover{
+  font-size: 20px;
+  transition: 100ms;
+}
