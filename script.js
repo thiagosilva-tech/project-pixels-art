@@ -50,8 +50,6 @@ window.onload = function () {
       console.log(colorSelected);
       if (colorSelected !== null) {
         pixel.style.backgroundColor = colorSelected;
-      } else if(colorSelected === null) {
-        pixel.style.backgroundColor = 'white';
       }
     }
 };
