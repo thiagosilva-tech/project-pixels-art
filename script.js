@@ -1,5 +1,6 @@
 window.onload = function () {
   const colors = document.querySelectorAll('.color');
+  const desenho = [];
   function changeBackgroundColor() {
     for (let index = 0; index < colors.length; index += 1) {
       const color = colors[index].innerText;
@@ -11,9 +12,20 @@ window.onload = function () {
 
   function createPixels() {
     const pixelBoard = document.querySelector('#pixel-board');
-    for (let index = 0; index < 25; index += 1) {
+    for (let i = 0; i < 25; i += 1) {
       const pixel = document.createElement('div');
       pixel.className = 'pixel';
+      pixel.id = i;
+      const desenhoLocalStorage = JSON.parse(
+        localStorage.getItem('pixelBoard')
+      );
+      if (desenhoLocalStorage !== null) {
+        for (let j = 0; j < desenhoLocalStorage.length; j += 1) {
+          if (desenhoLocalStorage[j].posicao === pixel.id) {
+            pixel.style.backgroundColor = desenhoLocalStorage[j].cor;
+          }
+        }
+      }
       pixelBoard.appendChild(pixel);
     }
   }
@@ -41,22 +53,35 @@ window.onload = function () {
     pixels[index].addEventListener('click', (evento) => {
       const pixelClicked = evento.target;
       changePixelColor(pixelClicked);
+      saveInLocalStorage(pixelClicked);
     });
   }
 
   function changePixelColor(pixel) {
     const colorSelected =
       document.querySelector('.selected').style.backgroundColor;
-    console.log(colorSelected);
     if (colorSelected !== null) {
       pixel.style.backgroundColor = colorSelected;
     }
+  }
+
+  function saveInLocalStorage(pixel) {
+    const cor = pixel.style.backgroundColor;
+    const posicao = pixel.id;
+    for (let index = 0; index < desenho.length; index += 1) {
+      if (desenho[index].posicao === posicao) {
+        desenho.splice(index, 1);
+      }
+    }
+    desenho.push({ posicao, cor });
+    localStorage.setItem('pixelBoard', JSON.stringify(desenho));
   }
 
   const btnClear = document.querySelector('#clear-board');
   btnClear.addEventListener('click', () => {
     for (let index = 0; index < pixels.length; index += 1) {
       pixels[index].style.backgroundColor = 'white';
+      localStorage.clear();
     }
   });
 
