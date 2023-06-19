@@ -1,7 +1,12 @@
+body{
+  background-color: #ecf87f;
+}
+
 #title {
   text-align: center;
   font-family: monospace;
   font-size: 40px;
+  color: #3d550c;
 }
 #color-palette {
   margin: auto;
@@ -15,4 +20,25 @@
   width: 150px;
   height: 150px;
   border: 1px solid black;
+}
+
+#pixel-board {
+  background-color: #81b622;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  width: 250px;
+  height: 250px;
+  padding-top: 40px;
+  padding-left: 40px;
+  border-radius: 20px;
+}
+
+.pixel {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  background-color: white;
+  display: inline-block;
+  margin-bottom: -4px;
 }

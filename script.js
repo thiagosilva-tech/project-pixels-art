@@ -8,4 +8,17 @@ window.onload = function () {
     }
   }
   changeBackgroundColor();
+
+  function createPixels() {
+    const pixelBoard = document.querySelector('#pixel-board');
+    for (let index = 0; index < 5; index += 1) {
+      const pixel = document.createElement('div');
+      pixel.className = 'pixel';
+      pixelBoard.appendChild(pixel);
+    }
+  }
+  for (let index = 0; index < 5; index += 1) {
+    createPixels();    
+  }
+
 };
