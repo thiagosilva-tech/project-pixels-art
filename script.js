@@ -1,6 +1,7 @@
 window.onload = function () {
   const colors = document.querySelectorAll('.color');
   const drawing = [];
+  const dafaultSize = localStorage.getItem('boardSize') || 5;
   // 1 - Adicione à página o título "Paleta de Cores" e uma paleta contendo quatro cores distintas
   function changeBackgroundColor() {
     for (let index = 0; index < colors.length; index += 1) {
@@ -12,17 +13,19 @@ window.onload = function () {
   changeBackgroundColor();
 
   // 2 - Adicione à página um quadro contendo 25 pixels, sendo que cada elemento do quadro de pixels possua 40 pixels de largura, 40 pixels de altura e seja delimitado por uma borda preta de 1 pixel
-  function createPixels() {
+  function createPixels(boardSize) {
     const pixelBoard = document.querySelector('#pixel-board');
-    for (let i = 0; i < 25; i += 1) {
+    boardSize = boardSize * boardSize;
+    for (let i = 0; i < boardSize; i += 1) {
       const pixel = document.createElement('div');
       pixel.className = 'pixel';
       pixel.id = i;
+      pixel.style.backgroundColor = 'white';
       pixelBoard.appendChild(pixel);
     }
-    recoverLocalStorage()
+    recoverLocalStorage();
   }
-  createPixels();
+  createPixels(dafaultSize);
 
   // 4 - Crie uma função que permita preencher um pixel do quadro com a cor selecionada na paleta de cores
   for (let index = 0; index < colors.length; index += 1) {
@@ -42,13 +45,17 @@ window.onload = function () {
     });
   }
 
-  const pixels = document.querySelectorAll('.pixel');
-  for (let index = 0; index < pixels.length; index += 1) {
-    pixels[index].addEventListener('click', (evento) => {
-      const pixelClicked = evento.target;
-      changePixelColor(pixelClicked);
-    });
+  function addPixelsEvent() {
+    const pixels = document.querySelectorAll('.pixel');
+    for (let index = 0; index < pixels.length; index += 1) {
+      pixels[index].addEventListener('click', (evento) => {
+        const pixelClicked = evento.target;
+        changePixelColor(pixelClicked);
+      });
+    }
   }
+
+  addPixelsEvent();
 
   function changePixelColor(pixel) {
     const colorSelectedElement = document.querySelector('.selected');
@@ -62,6 +69,7 @@ window.onload = function () {
   // 5 - Crie um botão que, ao ser clicado, limpa o quadro preenchendo a cor de todos seus pixels com branco
   const btnClear = document.querySelector('#clear-board');
   btnClear.addEventListener('click', () => {
+    const pixels = document.querySelectorAll('.pixel');
     for (let index = 0; index < pixels.length; index += 1) {
       pixels[index].style.backgroundColor = 'white';
     }
@@ -87,8 +95,8 @@ window.onload = function () {
     const pixelBackgroundColor = pixel.style.backgroundColor;
     drawing.push({
       id: pixelPosition,
-      backgroundColor: pixelBackgroundColor
-    })
+      backgroundColor: pixelBackgroundColor,
+    });
     const stringDrawing = JSON.stringify(drawing);
     localStorage.setItem('pixelBoard', stringDrawing);
   }
@@ -98,15 +106,63 @@ window.onload = function () {
     const pixels = document.querySelectorAll('.pixel');
 
     if (recoverDrawing) {
-      for (let indexRecoverDrawing = 0; indexRecoverDrawing < recoverDrawing.length; indexRecoverDrawing += 1) {
+      for (
+        let indexRecoverDrawing = 0;
+        indexRecoverDrawing < recoverDrawing.length;
+        indexRecoverDrawing += 1
+      ) {
         for (let indexPixels = 0; indexPixels < pixels.length; indexPixels++) {
-          if (pixels[indexPixels].id === recoverDrawing[indexRecoverDrawing].id) {
-            pixels[indexPixels].style.backgroundColor = recoverDrawing[indexRecoverDrawing].backgroundColor;
-          }              
+          if (
+            pixels[indexPixels].id === recoverDrawing[indexRecoverDrawing].id
+          ) {
+            pixels[indexPixels].style.backgroundColor =
+              recoverDrawing[indexRecoverDrawing].backgroundColor;
+          }
         }
       }
-    }   
+    }
+  }
+
+  // 8 - Crie um input que permita à pessoa usuária preencher um novo tamanho para o quadro de pixels
+
+  const input = document.querySelector('#board-size');
+  const btnGenerateBoard = document.querySelector('#generate-board');
+
+  btnGenerateBoard.addEventListener('click', () => {
+    const newBoardSize = input.value;
+    if (newBoardSize === '') {
+      window.alert('Board inválido!');
+    } else {
+      let newSize = parseInt(newBoardSize);
+      newSize = limitPixels(newSize);
+      deletePixels();
+      createPixels(newSize);
+      addPixelsEvent();
+      saveBoardSizeInLocalStorage(newSize);
+    }
+    input.value = '';
+  });
+
+  function deletePixels() {
+    localStorage.clear();
+    const pixels = document.querySelectorAll('.pixel');
+    for (let index = 0; index < pixels.length; index += 1) {
+      pixels[index].remove();
+    }
+  }
+
+  // 9 - Crie uma função que limite o tamanho mínimo e máximo do quadro de pixels
+  function limitPixels(size) {
+    if (size < 5) {
+      size = 5;
+    } else if (size > 50) {
+      size = 50;
+    }
+    return size;
+  }
+
+  // 10 - Crie uma função para manter o tamanho novo do board ao recarregar a página
+  function saveBoardSizeInLocalStorage(size) {
+    localStorage.setItem('boardSize', size);
   }
 };
-
-// 8 - 
