@@ -1,6 +1,7 @@
 window.onload = function () {
   const colors = document.querySelectorAll('.color');
-  const desenho = [];
+  const drawing = [];
+  // 1 - Adicione à página o título "Paleta de Cores" e uma paleta contendo quatro cores distintas
   function changeBackgroundColor() {
     for (let index = 0; index < colors.length; index += 1) {
       const color = colors[index].innerText;
@@ -10,27 +11,20 @@ window.onload = function () {
   }
   changeBackgroundColor();
 
+  // 2 - Adicione à página um quadro contendo 25 pixels, sendo que cada elemento do quadro de pixels possua 40 pixels de largura, 40 pixels de altura e seja delimitado por uma borda preta de 1 pixel
   function createPixels() {
     const pixelBoard = document.querySelector('#pixel-board');
     for (let i = 0; i < 25; i += 1) {
       const pixel = document.createElement('div');
       pixel.className = 'pixel';
       pixel.id = i;
-      const desenhoLocalStorage = JSON.parse(
-        localStorage.getItem('pixelBoard')
-      );
-      if (desenhoLocalStorage !== null) {
-        for (let j = 0; j < desenhoLocalStorage.length; j += 1) {
-          if (desenhoLocalStorage[j].posicao === pixel.id) {
-            pixel.style.backgroundColor = desenhoLocalStorage[j].cor;
-          }
-        }
-      }
       pixelBoard.appendChild(pixel);
     }
+    recoverLocalStorage()
   }
   createPixels();
 
+  // 4 - Crie uma função que permita preencher um pixel do quadro com a cor selecionada na paleta de cores
   for (let index = 0; index < colors.length; index += 1) {
     colors[index].addEventListener('click', (evento) => {
       const clickedColor = evento.target;
@@ -53,38 +47,27 @@ window.onload = function () {
     pixels[index].addEventListener('click', (evento) => {
       const pixelClicked = evento.target;
       changePixelColor(pixelClicked);
-      saveInLocalStorage(pixelClicked);
     });
   }
 
   function changePixelColor(pixel) {
-    const colorSelected =
-      document.querySelector('.selected').style.backgroundColor;
-    if (colorSelected !== null) {
+    const colorSelectedElement = document.querySelector('.selected');
+    if (colorSelectedElement !== null) {
+      const colorSelected = colorSelectedElement.style.backgroundColor;
       pixel.style.backgroundColor = colorSelected;
     }
+    saveInLocalStorage(pixel);
   }
 
-  function saveInLocalStorage(pixel) {
-    const cor = pixel.style.backgroundColor;
-    const posicao = pixel.id;
-    for (let index = 0; index < desenho.length; index += 1) {
-      if (desenho[index].posicao === posicao) {
-        desenho.splice(index, 1);
-      }
-    }
-    desenho.push({ posicao, cor });
-    localStorage.setItem('pixelBoard', JSON.stringify(desenho));
-  }
-
+  // 5 - Crie um botão que, ao ser clicado, limpa o quadro preenchendo a cor de todos seus pixels com branco
   const btnClear = document.querySelector('#clear-board');
   btnClear.addEventListener('click', () => {
     for (let index = 0; index < pixels.length; index += 1) {
       pixels[index].style.backgroundColor = 'white';
-      localStorage.clear();
     }
   });
 
+  // 6 - Adicione um botão para gerar cores aleatórias para a paleta de cores
   const btnRandomColor = document.querySelector('#button-random-color');
   btnRandomColor.addEventListener('click', () => {
     for (let index = 0; index < colors.length; index += 1) {
@@ -97,4 +80,33 @@ window.onload = function () {
       colors[index].style.backgroundColor = colorRandom;
     }
   });
+
+  // 7 - Crie uma função para salvar e recuperar o seu pixelBoard atual no localStorage
+  function saveInLocalStorage(pixel) {
+    const pixelPosition = pixel.id;
+    const pixelBackgroundColor = pixel.style.backgroundColor;
+    drawing.push({
+      id: pixelPosition,
+      backgroundColor: pixelBackgroundColor
+    })
+    const stringDrawing = JSON.stringify(drawing);
+    localStorage.setItem('pixelBoard', stringDrawing);
+  }
+
+  function recoverLocalStorage() {
+    const recoverDrawing = JSON.parse(localStorage.getItem('pixelBoard'));
+    const pixels = document.querySelectorAll('.pixel');
+
+    if (recoverDrawing) {
+      for (let indexRecoverDrawing = 0; indexRecoverDrawing < recoverDrawing.length; indexRecoverDrawing += 1) {
+        for (let indexPixels = 0; indexPixels < pixels.length; indexPixels++) {
+          if (pixels[indexPixels].id === recoverDrawing[indexRecoverDrawing].id) {
+            pixels[indexPixels].style.backgroundColor = recoverDrawing[indexRecoverDrawing].backgroundColor;
+          }              
+        }
+      }
+    }   
+  }
 };
+
+// 8 - 

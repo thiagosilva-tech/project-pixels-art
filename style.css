@@ -69,3 +69,14 @@ body {
   font-size: 20px;
   transition: 100ms;
 }
+
+#container-input {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#generate-board {
+  margin-left: 5px;
+}
